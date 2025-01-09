@@ -29,9 +29,13 @@ jobs:
         run: |
           vcpkg install nu-book-zxing-cpp
 
-      - name: List files in zxing-cpp directory
+      - name: List files in root directory
         run: |
           dir .
+
+      - name: List files in zxing-cpp directory
+        run: |
+          dir zxing-cpp
 
       - name: Configure CMake
         run: |
