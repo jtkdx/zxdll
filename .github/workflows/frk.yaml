@@ -30,7 +30,7 @@ jobs:
       shell: pwsh
 
     - name: Configure with CMake
-      run: cmake -S . -B build -G Ninja
+      run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
       shell: pwsh
 
     - name: Build project
@@ -42,13 +42,14 @@ jobs:
         echo "Listing files in the build directory:"
         dir build
         echo "Listing files in the Release directory:"
-        dir build\Release
+        dir build\Release || echo "Release directory not found, checking other directories..."
+        dir build\Debug || echo "Debug directory not found."
       shell: pwsh
 
     - name: Create DLL
       run: |
         mkdir -p output
-        cp build\Release\*.dll output\
+        cp build\Release\*.dll output\ || cp build\Debug\*.dll output\
       shell: pwsh
 
     - name: Upload artifact
