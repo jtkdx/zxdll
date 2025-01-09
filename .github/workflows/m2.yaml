@@ -4,30 +4,32 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up CMake
-      uses: lukka/get-cmake@v3.19.6
-
-    - name: Set up dependencies
-      run: sudo apt-get install -y libpng-dev zlib1g-dev
+    - name: Verify repository structure
+      run: dir
+      shell: pwsh
 
     - name: Configure with CMake
       run: cmake -S . -B build
+      shell: pwsh
 
     - name: Build project
       run: cmake --build build --config Release
+      shell: pwsh
 
     - name: Create DLL
       run: |
         mkdir -p output
-        cp build/libzxing.so output/zxing.dll
+        cp build\Release\*.dll output\
+      shell: pwsh
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: zxing-dll
-        path: output/zxing.dll
+        path: output\*.dll
