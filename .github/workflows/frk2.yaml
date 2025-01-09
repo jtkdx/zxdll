@@ -1,0 +1,65 @@
+name: Build and Create DLL
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: zxing-cpp/zxing-cpp
+
+    - name: Verify repository structure
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Listing files in the current directory:"
+        dir
+      shell: pwsh
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Set up dependencies
+      run: |
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        choco install ninja
+      shell: pwsh
+
+    - name: Configure with CMake
+      run: cmake -S . -B build -G Ninja -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="${{ github.workspace }}/build/Release"
+      shell: pwsh
+
+    - name: Build project
+      run: |
+        cmake --build build --config Release --verbose
+        if ($LASTEXITCODE -ne 0) {
+          echo "Build failed with exit code $LASTEXITCODE"
+          exit 1
+        }
+      shell: pwsh
+
+    - name: Verify build output
+      run: |
+        echo "Listing files in the build directory:"
+        dir build
+        echo "Listing files in the Release directory:"
+        dir build\Release || echo "Release directory not found."
+        echo "Listing all files in the Release directory:"
+        Get-ChildItem -Recurse build\Release
+      shell: pwsh
+
+    - name: Create DLL
+      run: |
+        mkdir -p output
+        cp build\Release\*.dll output\ || echo "No DLL files found."
+      shell: pwsh
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: zxing-dll
+        path: output\*.dll
