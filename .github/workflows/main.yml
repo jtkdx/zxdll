@@ -1,0 +1,40 @@
+name: Build on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup vcpkg
+        uses: msys2/setup-msys2@v2
+        with:
+          msys2-path: C:\msys64\usr\bin
+
+      - name: Install dependencies
+        run: |
+          vcpkg install nu-book-zxing-cpp
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -H . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build
+        run: |
+          cmake --build build --config Release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: zxing-cpp.dll
+          path: build/Release/zxing-cpp.dll
