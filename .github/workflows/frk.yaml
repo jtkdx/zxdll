@@ -9,16 +9,28 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        repository: zxing-cpp/zxing-cpp
 
     - name: Verify repository structure
-      run: dir
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Listing files in the current directory:"
+        dir
       shell: pwsh
 
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Set up dependencies
+      run: |
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        choco install ninja
+      shell: pwsh
+
     - name: Configure with CMake
-      run: cmake -S . -B build
+      run: cmake -S . -B build -G Ninja
       shell: pwsh
 
     - name: Build project
