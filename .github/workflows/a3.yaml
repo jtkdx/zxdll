@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           vcpkg search zxing
-          vcpkg install nu-book-zxing-cpp
+          vcpkg install zxing-cpp
 
       - name: Configure CMake
         run: |
