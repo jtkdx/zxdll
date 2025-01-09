@@ -37,6 +37,14 @@ jobs:
       run: cmake --build build --config Release
       shell: pwsh
 
+    - name: Verify build output
+      run: |
+        echo "Listing files in the build directory:"
+        dir build
+        echo "Listing files in the Release directory:"
+        dir build\Release
+      shell: pwsh
+
     - name: Create DLL
       run: |
         mkdir -p output
