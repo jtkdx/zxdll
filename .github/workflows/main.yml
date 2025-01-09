@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Setup vcpkg
-        uses: msys2/setup-msys2@v4
+        uses: msys2/setup-msys2@v2
         with:
           msys2-path: C:\msys64\usr\bin
 
@@ -34,7 +34,7 @@ jobs:
           cmake --build build --config Release
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: zxing-cpp.dll
           path: build/Release/zxing-cpp.dll
