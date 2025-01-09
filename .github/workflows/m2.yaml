@@ -1,0 +1,33 @@
+name: Build and Create DLL
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up CMake
+      uses: lukka/get-cmake@v3.19.6
+
+    - name: Set up dependencies
+      run: sudo apt-get install -y libpng-dev zlib1g-dev
+
+    - name: Configure with CMake
+      run: cmake -S . -B build
+
+    - name: Build project
+      run: cmake --build build --config Release
+
+    - name: Create DLL
+      run: |
+        mkdir -p output
+        cp build/libzxing.so output/zxing.dll
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: zxing-dll
+        path: output/zxing.dll
