@@ -48,6 +48,8 @@ jobs:
         dir build
         echo "Listing files in the Release directory:"
         dir build\Release || echo "Release directory not found."
+        echo "Listing all files in the Release directory:"
+        Get-ChildItem -Recurse build\Release
       shell: pwsh
 
     - name: Create DLL
