@@ -16,15 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup vcpkg
+      - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msys2-path: C:\msys64\usr\bin
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-gcc
+          path-type: inherit
 
       - name: Install dependencies
         run: |
-          vcpkg search zxing
-          vcpkg install zxing-cpp
+          vcpkg install nu-book-zxing-cpp
 
       - name: Configure CMake
         run: |
