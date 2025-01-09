@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup vcpkg
-        uses: msys2/setup-msys2@v2
+        uses: msys2/setup-msys2@v4
         with:
           msys2-path: C:\msys64\usr\bin
 
