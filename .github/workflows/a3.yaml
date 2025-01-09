@@ -16,10 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: List directory contents
-        run: |
-          dir
-
       - name: Setup vcpkg
         uses: msys2/setup-msys2@v2
         with:
@@ -27,4 +23,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          vcpkg install zxing-cpp
+          vcpkg search zxing
+          vcpkg install nu-book-zxing-cpp
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Build
+        run: |
+          cmake --build build --config Release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zxing-cpp.dll
+          path: build/Release/zxing-cpp.dll
