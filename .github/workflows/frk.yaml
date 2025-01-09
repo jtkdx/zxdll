@@ -34,11 +34,8 @@ jobs:
       shell: pwsh
 
     - name: Build project
-      run: cmake --build build --config Release --verbose
-      shell: pwsh
-
-    - name: Check for build errors
       run: |
+        cmake --build build --config Release --verbose
         if ($LASTEXITCODE -ne 0) {
           echo "Build failed with exit code $LASTEXITCODE"
           exit 1
