@@ -1,0 +1,30 @@
+name: Build on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: List directory contents
+        run: |
+          dir
+
+      - name: Setup vcpkg
+        uses: msys2/setup-msys2@v2
+        with:
+          msys2-path: C:\msys64\usr\bin
+
+      - name: Install dependencies
+        run: |
+          vcpkg install zxing-cpp
