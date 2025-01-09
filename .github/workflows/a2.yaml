@@ -1,0 +1,26 @@
+name: Build on Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: List directory contents
+      run: |
+        dir
+    
+    - name: List files in zxing-cpp directory
+      run: |
+        dir zxing-cpp
