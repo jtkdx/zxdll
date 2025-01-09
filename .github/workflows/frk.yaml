@@ -47,14 +47,13 @@ jobs:
         echo "Listing files in the build directory:"
         dir build
         echo "Listing files in the Release directory:"
-        dir build\Release || echo "Release directory not found, checking other directories..."
-        dir build\Debug || echo "Debug directory not found."
+        dir build\Release || echo "Release directory not found."
       shell: pwsh
 
     - name: Create DLL
       run: |
         mkdir -p output
-        cp build\Release\*.dll output\ || cp build\Debug\*.dll output\
+        cp build\Release\*.dll output\ || echo "No DLL files found."
       shell: pwsh
 
     - name: Upload artifact
