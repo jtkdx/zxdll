@@ -34,7 +34,7 @@ jobs:
           cmake --build build --config Release
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: zxing-cpp.dll
           path: build/Release/zxing-cpp.dll
